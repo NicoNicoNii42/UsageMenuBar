@@ -7,6 +7,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/Applications}"
 APP_VERSION="${APP_VERSION:-0.1.0}"
 BUILD_NUMBER="${BUILD_NUMBER:-1}"
+AD_HOC_SIGN="${AD_HOC_SIGN:-1}"
 DIST_DIR="$ROOT_DIR/.build/dist"
 
 cd "$ROOT_DIR"
@@ -51,6 +52,17 @@ PLIST
 
 echo "Created $APP_DIR"
 
+ad_hoc_sign_app() {
+    if [[ "$AD_HOC_SIGN" != "1" ]]; then
+        echo "Skipping ad-hoc codesign."
+        return
+    fi
+
+    /usr/bin/codesign --force --deep --sign - "$APP_DIR"
+    /usr/bin/codesign --verify --deep --strict --verbose=2 "$APP_DIR"
+    echo "Ad-hoc signed $APP_DIR"
+}
+
 create_zip() {
     mkdir -p "$DIST_DIR"
     rm -f "$ZIP_PATH"
@@ -61,6 +73,7 @@ create_zip() {
     echo "Created $ZIP_PATH"
 }
 
+ad_hoc_sign_app
 create_zip
 
 mkdir -p "$INSTALL_DIR"

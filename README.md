@@ -39,9 +39,20 @@ The script also writes release artifacts to `.build/dist/`:
 
 - `UsageMenuBar-<version>-macos.zip`
 
-The app is intentionally unsigned. This repository is meant for developers who
-can inspect the source and build locally, or download the unsigned release
-artifact with the usual macOS Gatekeeper warning tradeoff.
+Release builds are ad-hoc signed, which does not require an Apple Developer
+account. They are not notarized, so macOS may still block the downloaded app
+because it came from the internet.
+
+If you trust the source and downloaded release, remove the quarantine attribute
+after extracting the ZIP:
+
+```sh
+xattr -dr com.apple.quarantine ~/Applications/UsageMenuBar.app
+open ~/Applications/UsageMenuBar.app
+```
+
+Building locally with `Scripts/package_app.sh` is the preferred install path for
+developers.
 
 For a GitHub release:
 
