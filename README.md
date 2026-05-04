@@ -20,7 +20,14 @@ swift build
 
 ```sh
 Scripts/package_app.sh
-open .build/UsageMenuBar.app
+open ~/Applications/UsageMenuBar.app
 ```
 
 The packaged app sets `LSUIElement=true`, so it does not appear in the Dock or Cmd-Tab switcher.
+The script also installs it to `~/Applications/UsageMenuBar.app` so Spotlight can find it.
+
+To install somewhere else:
+
+```sh
+INSTALL_DIR=/Applications Scripts/package_app.sh
+```

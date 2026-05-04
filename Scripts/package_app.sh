@@ -4,6 +4,7 @@ set -euo pipefail
 CONFIGURATION="${1:-release}"
 APP_NAME="UsageMenuBar"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+INSTALL_DIR="${INSTALL_DIR:-$HOME/Applications}"
 
 cd "$ROOT_DIR"
 swift build -c "$CONFIGURATION"
@@ -45,3 +46,9 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
 PLIST
 
 echo "Created $APP_DIR"
+
+mkdir -p "$INSTALL_DIR"
+rm -rf "$INSTALL_DIR/${APP_NAME}.app"
+cp -R "$APP_DIR" "$INSTALL_DIR/${APP_NAME}.app"
+
+echo "Installed $INSTALL_DIR/${APP_NAME}.app"
