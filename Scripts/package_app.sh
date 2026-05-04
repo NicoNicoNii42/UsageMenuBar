@@ -15,7 +15,6 @@ swift build -c "$CONFIGURATION"
 BIN_DIR="$(swift build -c "$CONFIGURATION" --show-bin-path)"
 APP_DIR="$ROOT_DIR/.build/${APP_NAME}.app"
 ZIP_PATH="$DIST_DIR/${APP_NAME}-${APP_VERSION}-macos.zip"
-CHECKSUM_PATH="$ZIP_PATH.sha256"
 
 rm -rf "$APP_DIR"
 mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
@@ -54,11 +53,12 @@ echo "Created $APP_DIR"
 
 create_zip() {
     mkdir -p "$DIST_DIR"
-    rm -f "$ZIP_PATH" "$CHECKSUM_PATH"
-    /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$APP_DIR" "$ZIP_PATH"
-    /usr/bin/shasum -a 256 "$ZIP_PATH" > "$CHECKSUM_PATH"
+    rm -f "$ZIP_PATH"
+    (
+        cd "$ROOT_DIR/.build"
+        /usr/bin/zip -qry "$ZIP_PATH" "${APP_NAME}.app"
+    )
     echo "Created $ZIP_PATH"
-    echo "Created $CHECKSUM_PATH"
 }
 
 create_zip
