@@ -48,6 +48,7 @@ public struct UsageWindowDisplay: Equatable {
     public let countdownLong: String
     public let countdownCompact: String
     public let timeLeftPercent: Int?
+    public let timePerPercent: String?
     public let status: UsageStatus
 
     public init(
@@ -57,6 +58,7 @@ public struct UsageWindowDisplay: Equatable {
         countdownLong: String,
         countdownCompact: String,
         timeLeftPercent: Int?,
+        timePerPercent: String? = nil,
         status: UsageStatus
     ) {
         self.title = title
@@ -65,6 +67,7 @@ public struct UsageWindowDisplay: Equatable {
         self.countdownLong = countdownLong
         self.countdownCompact = countdownCompact
         self.timeLeftPercent = timeLeftPercent
+        self.timePerPercent = timePerPercent
         self.status = status
     }
 }

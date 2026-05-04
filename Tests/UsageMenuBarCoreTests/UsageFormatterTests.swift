@@ -13,6 +13,14 @@ import Testing
     #expect(UsageFormatter.timeLeftPercent(window: window, now: now) == 60)
 }
 
+@Test func timePerPercentFormatsWindowDuration() {
+    let fiveHourWindow = RateLimitWindow(resetsAt: nil, usedPercent: 42, windowDurationMins: 300)
+    let weeklyWindow = RateLimitWindow(resetsAt: nil, usedPercent: 42, windowDurationMins: 10_080)
+
+    #expect(UsageFormatter.timePerPercent(window: fiveHourWindow) == "3m")
+    #expect(UsageFormatter.timePerPercent(window: weeklyWindow) == "1h 40m 48s")
+}
+
 @Test func countdownFormatsDaysHoursAndCompactHoursMinutes() {
     let now = Date(timeIntervalSince1970: 0)
     let reset = Date(timeIntervalSince1970: 93_600)
@@ -29,6 +37,7 @@ import Testing
 
     #expect(display.usedPercent == 67)
     #expect(display.remainingPercent == 33)
+    #expect(display.timePerPercent == nil)
 }
 
 @Test func menuBarTitleUsesWeeklyUsageLeftAndTimeLeft() {

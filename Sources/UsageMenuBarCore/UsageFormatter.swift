@@ -14,6 +14,7 @@ public enum UsageFormatter {
             countdownLong: countdown(to: window.resetDate, now: now, compact: false),
             countdownCompact: countdown(to: window.resetDate, now: now, compact: true),
             timeLeftPercent: timeLeftPercent(window: window, now: now),
+            timePerPercent: timePerPercent(window: window),
             status: .from(usedPercent: usedPercent)
         )
     }
@@ -31,6 +32,18 @@ public enum UsageFormatter {
         let windowSeconds = TimeInterval(durationMinutes * 60)
         let percent = (secondsLeft / windowSeconds) * 100
         return clampedPercent(Int(percent.rounded()))
+    }
+
+    public static func timePerPercent(window: RateLimitWindow) -> String? {
+        guard
+            let durationMinutes = window.windowDurationMins,
+            durationMinutes > 0
+        else {
+            return nil
+        }
+
+        let seconds = Int((Double(durationMinutes) * 60 / 100).rounded())
+        return duration(seconds)
     }
 
     public static func countdown(to resetDate: Date?, now: Date = Date(), compact: Bool) -> String {
@@ -52,6 +65,33 @@ public enum UsageFormatter {
         }
 
         return compact ? "\(minutes)m" : "\(minutes)m"
+    }
+
+    private static func duration(_ seconds: Int) -> String {
+        let seconds = max(0, seconds)
+        let days = seconds / 86_400
+        let hours = (seconds % 86_400) / 3_600
+        let minutes = (seconds % 3_600) / 60
+        let remainingSeconds = seconds % 60
+        var parts: [String] = []
+
+        if days > 0 {
+            parts.append("\(days)d")
+        }
+
+        if hours > 0 {
+            parts.append("\(hours)h")
+        }
+
+        if minutes > 0 {
+            parts.append("\(minutes)m")
+        }
+
+        if remainingSeconds > 0 || parts.isEmpty {
+            parts.append("\(remainingSeconds)s")
+        }
+
+        return parts.joined(separator: " ")
     }
 
     public static func remainingPercent(usedPercent: Int) -> Int {

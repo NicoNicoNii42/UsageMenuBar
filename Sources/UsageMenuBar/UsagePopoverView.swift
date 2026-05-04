@@ -151,10 +151,20 @@ private struct UsageCard: View {
                 Text("Resets in \(display.countdownLong)")
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text(timeLeftText)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
+                HStack(spacing: 6) {
+                    if let timePerPercentText {
+                        Text(timePerPercentText)
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                            .monospacedDigit()
+                    }
+                    Text(timeLeftText)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                }
+                .lineLimit(1)
+                .minimumScaleFactor(0.85)
             }
             .font(.subheadline)
         }
@@ -169,6 +179,10 @@ private struct UsageCard: View {
 
     private var timeLeftText: String {
         display.timeLeftPercent.map { "T\($0)%" } ?? "T--"
+    }
+
+    private var timePerPercentText: String? {
+        display.timePerPercent.map { "1%=\($0)" }
     }
 }
 
