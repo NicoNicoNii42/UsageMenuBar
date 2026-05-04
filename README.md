@@ -35,7 +35,6 @@ INSTALL_DIR=/Applications Scripts/package_app.sh
 The script also writes release artifacts to `.build/dist/`:
 
 - `UsageMenuBar-<version>-macos.zip`
-- `UsageMenuBar-<version>-macos.zip.sha256`
 
 The app is intentionally unsigned. This repository is meant for developers who
 can inspect the source and build locally, or download the unsigned release
@@ -47,7 +46,6 @@ For a GitHub release:
 APP_VERSION=0.1.0 BUILD_NUMBER=1 Scripts/package_app.sh
 gh release create v0.1.0 \
   .build/dist/UsageMenuBar-0.1.0-macos.zip \
-  .build/dist/UsageMenuBar-0.1.0-macos.zip.sha256 \
   --title "UsageMenuBar 0.1.0" \
   --generate-notes \
   --verify-tag \
