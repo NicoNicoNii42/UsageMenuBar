@@ -77,6 +77,18 @@ public enum UsageStatus: String, Equatable {
     case caution = "Caution"
     case high = "High"
 
+    public static func from(
+        remainingPercent: Int,
+        timeLeftPercent: Int?,
+        usedPercent: Int
+    ) -> UsageStatus {
+        guard let timeLeftPercent else {
+            return .from(usedPercent: usedPercent)
+        }
+
+        return timeLeftPercent <= remainingPercent ? .good : .caution
+    }
+
     public static func from(usedPercent: Int) -> UsageStatus {
         switch usedPercent {
         case 0..<60:

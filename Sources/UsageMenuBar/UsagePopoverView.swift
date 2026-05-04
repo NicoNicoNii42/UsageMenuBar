@@ -11,13 +11,13 @@ struct UsagePopoverView: View {
 
             VStack(spacing: 10) {
                 if let primary = store.primary {
-                    UsageCard(display: primary, tint: .mint, icon: "clock.fill")
+                    UsageCard(display: primary, icon: "clock.fill")
                 } else {
                     PlaceholderCard(title: "5-Hour Usage")
                 }
 
                 if let secondary = store.secondary {
-                    UsageCard(display: secondary, tint: .orange, icon: "calendar")
+                    UsageCard(display: secondary, icon: "calendar")
                 } else {
                     PlaceholderCard(title: "7-Day Usage")
                 }
@@ -114,14 +114,13 @@ struct UsagePopoverView: View {
 
 private struct UsageCard: View {
     let display: UsageWindowDisplay
-    let tint: Color
     let icon: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
-                    .foregroundStyle(tint)
+                    .foregroundStyle(display.status.color)
                 Text(sectionTitle)
                     .font(.caption)
                     .fontWeight(.bold)
@@ -138,12 +137,12 @@ private struct UsageCard: View {
                 StatusPill(status: display.status)
                 Text("\(display.remainingPercent)% left")
                     .font(.system(size: 20, weight: .bold))
-                    .foregroundStyle(tint)
+                    .foregroundStyle(display.status.color)
                     .monospacedDigit()
             }
 
             ProgressView(value: Double(display.remainingPercent), total: 100)
-                .tint(tint)
+                .tint(display.status.color)
 
             HStack(spacing: 8) {
                 Image(systemName: "arrow.counterclockwise")
@@ -221,7 +220,13 @@ private struct StatusPill: View {
     }
 
     private var color: Color {
-        switch status {
+        status.color
+    }
+}
+
+private extension UsageStatus {
+    var color: Color {
+        switch self {
         case .good:
             return .mint
         case .caution:

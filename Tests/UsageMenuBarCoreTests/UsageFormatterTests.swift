@@ -40,6 +40,40 @@ import Testing
     #expect(display.timePerPercent == nil)
 }
 
+@Test func displayShowsCautionWhenTimeLeftIsMoreThanUsageLeft() {
+    let now = Date(timeIntervalSince1970: 1_000)
+    let display = UsageFormatter.display(
+        title: "7-Day Usage",
+        window: RateLimitWindow(
+            resetsAt: 1_000 + (7 * 24 * 3_600),
+            usedPercent: 70,
+            windowDurationMins: 10_080
+        ),
+        now: now
+    )
+
+    #expect(display.remainingPercent == 30)
+    #expect(display.timeLeftPercent == 100)
+    #expect(display.status == .caution)
+}
+
+@Test func displayShowsGoodWhenTimeLeftIsLessThanUsageLeft() {
+    let now = Date(timeIntervalSince1970: 1_000)
+    let display = UsageFormatter.display(
+        title: "7-Day Usage",
+        window: RateLimitWindow(
+            resetsAt: 1_000 + (24 * 3_600),
+            usedPercent: 20,
+            windowDurationMins: 10_080
+        ),
+        now: now
+    )
+
+    #expect(display.remainingPercent == 80)
+    #expect(display.timeLeftPercent == 14)
+    #expect(display.status == .good)
+}
+
 @Test func menuBarTitleUsesWeeklyUsageLeftAndTimeLeft() {
     let display = UsageWindowDisplay(
         title: "7-Day Usage",

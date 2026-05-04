@@ -7,15 +7,21 @@ public enum UsageFormatter {
         now: Date = Date()
     ) -> UsageWindowDisplay {
         let usedPercent = clampedPercent(window.usedPercent)
+        let remainingPercent = remainingPercent(usedPercent: usedPercent)
+        let timeLeftPercent = timeLeftPercent(window: window, now: now)
         return UsageWindowDisplay(
             title: title,
             usedPercent: usedPercent,
-            remainingPercent: remainingPercent(usedPercent: usedPercent),
+            remainingPercent: remainingPercent,
             countdownLong: countdown(to: window.resetDate, now: now, compact: false),
             countdownCompact: countdown(to: window.resetDate, now: now, compact: true),
-            timeLeftPercent: timeLeftPercent(window: window, now: now),
+            timeLeftPercent: timeLeftPercent,
             timePerPercent: timePerPercent(window: window),
-            status: .from(usedPercent: usedPercent)
+            status: .from(
+                remainingPercent: remainingPercent,
+                timeLeftPercent: timeLeftPercent,
+                usedPercent: usedPercent
+            )
         )
     }
 
