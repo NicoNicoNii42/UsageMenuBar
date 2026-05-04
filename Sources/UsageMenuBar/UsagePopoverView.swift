@@ -17,7 +17,7 @@ struct UsagePopoverView: View {
                 }
 
                 if let secondary = store.secondary {
-                    UsageCard(display: secondary, icon: "calendar")
+                    UsageCard(display: secondary, icon: "chart.bar.fill")
                 } else {
                     PlaceholderCard(title: "7-Day Usage")
                 }
@@ -42,7 +42,7 @@ struct UsagePopoverView: View {
             ZStack {
                 Circle()
                     .fill(Color.accentColor.opacity(0.18))
-                Image(systemName: "sparkles")
+                Image(systemName: "chart.bar.fill")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(Color.accentColor)
             }
@@ -120,7 +120,7 @@ private struct UsageCard: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
-                    .foregroundStyle(display.status.color)
+                    .foregroundStyle(usageColor)
                 Text(sectionTitle)
                     .font(.caption)
                     .fontWeight(.bold)
@@ -137,12 +137,12 @@ private struct UsageCard: View {
                 StatusPill(status: display.status)
                 Text("\(display.remainingPercent)% left")
                     .font(.system(size: 20, weight: .bold))
-                    .foregroundStyle(display.status.color)
+                    .foregroundStyle(usageColor)
                     .monospacedDigit()
             }
 
             ProgressView(value: Double(display.remainingPercent), total: 100)
-                .tint(display.status.color)
+                .tint(usageColor)
 
             HStack(spacing: 8) {
                 Image(systemName: "arrow.counterclockwise")
@@ -174,6 +174,14 @@ private struct UsageCard: View {
 
     private var sectionTitle: String {
         display.title.contains("7-Day") ? "Weekly Limits" : "Current Session"
+    }
+
+    private var usageColor: Color {
+        guard display.title.contains("7-Day") else {
+            return display.status.color
+        }
+
+        return UsageThresholdColor.color(for: display.remainingPercent)
     }
 
     private var timeLeftText: String {
