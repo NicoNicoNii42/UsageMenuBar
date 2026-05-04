@@ -139,13 +139,13 @@ private struct UsageCard: View {
                     .lineLimit(1)
                 Spacer()
                 StatusPill(status: display.status)
-                Text("\(display.usedPercent)%")
+                Text("\(display.remainingPercent)% left")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundStyle(tint)
                     .monospacedDigit()
             }
 
-            ProgressView(value: Double(display.usedPercent), total: 100)
+            ProgressView(value: Double(display.remainingPercent), total: 100)
                 .tint(tint)
 
             HStack(spacing: 8) {

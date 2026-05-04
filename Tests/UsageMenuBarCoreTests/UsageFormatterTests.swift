@@ -21,17 +21,28 @@ import Testing
     #expect(UsageFormatter.countdown(to: reset, now: now, compact: true) == "1d2h")
 }
 
-@Test func menuBarTitleUsesUsageCountdownAndTimeLeft() {
+@Test func displayInvertsUsageIntoRemainingPercent() {
+    let display = UsageFormatter.display(
+        title: "7-Day Usage",
+        window: RateLimitWindow(resetsAt: nil, usedPercent: 67, windowDurationMins: nil)
+    )
+
+    #expect(display.usedPercent == 67)
+    #expect(display.remainingPercent == 33)
+}
+
+@Test func menuBarTitleUsesWeeklyUsageLeftAndTimeLeft() {
     let display = UsageWindowDisplay(
-        title: "5-Hour Usage",
-        usedPercent: 3,
+        title: "7-Day Usage",
+        usedPercent: 67,
+        remainingPercent: 33,
         countdownLong: "1h 47m",
         countdownCompact: "1h47m",
         timeLeftPercent: 36,
         status: .good
     )
 
-    #expect(UsageFormatter.menuBarTitle(primary: display) == "3% · 1h47m · T36%")
+    #expect(UsageFormatter.menuBarTitle(weekly: display) == "33% | T36%")
 }
 
 @Test func rateLimitResponsePrefersCodexBucket() throws {

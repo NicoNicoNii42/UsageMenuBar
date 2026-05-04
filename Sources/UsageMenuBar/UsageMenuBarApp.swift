@@ -13,7 +13,8 @@ struct UsageMenuBarApp: App {
                     store.start()
                 }
         } label: {
-            Label(store.menuBarTitle, systemImage: "chart.bar.fill")
+            Text(store.menuBarTitle)
+                .monospacedDigit()
         }
         .menuBarExtraStyle(.window)
     }

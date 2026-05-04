@@ -44,6 +44,7 @@ public struct RateLimitWindow: Decodable, Equatable {
 public struct UsageWindowDisplay: Equatable {
     public let title: String
     public let usedPercent: Int
+    public let remainingPercent: Int
     public let countdownLong: String
     public let countdownCompact: String
     public let timeLeftPercent: Int?
@@ -52,6 +53,7 @@ public struct UsageWindowDisplay: Equatable {
     public init(
         title: String,
         usedPercent: Int,
+        remainingPercent: Int,
         countdownLong: String,
         countdownCompact: String,
         timeLeftPercent: Int?,
@@ -59,6 +61,7 @@ public struct UsageWindowDisplay: Equatable {
     ) {
         self.title = title
         self.usedPercent = usedPercent
+        self.remainingPercent = remainingPercent
         self.countdownLong = countdownLong
         self.countdownCompact = countdownCompact
         self.timeLeftPercent = timeLeftPercent

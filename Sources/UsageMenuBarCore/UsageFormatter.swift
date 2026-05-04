@@ -6,13 +6,15 @@ public enum UsageFormatter {
         window: RateLimitWindow,
         now: Date = Date()
     ) -> UsageWindowDisplay {
-        UsageWindowDisplay(
+        let usedPercent = clampedPercent(window.usedPercent)
+        return UsageWindowDisplay(
             title: title,
-            usedPercent: clampedPercent(window.usedPercent),
+            usedPercent: usedPercent,
+            remainingPercent: remainingPercent(usedPercent: usedPercent),
             countdownLong: countdown(to: window.resetDate, now: now, compact: false),
             countdownCompact: countdown(to: window.resetDate, now: now, compact: true),
             timeLeftPercent: timeLeftPercent(window: window, now: now),
-            status: .from(usedPercent: window.usedPercent)
+            status: .from(usedPercent: usedPercent)
         )
     }
 
@@ -52,13 +54,17 @@ public enum UsageFormatter {
         return compact ? "\(minutes)m" : "\(minutes)m"
     }
 
-    public static func menuBarTitle(primary: UsageWindowDisplay?) -> String {
-        guard let primary else {
-            return "Codex --"
+    public static func remainingPercent(usedPercent: Int) -> Int {
+        clampedPercent(100 - usedPercent)
+    }
+
+    public static func menuBarTitle(weekly: UsageWindowDisplay?) -> String {
+        guard let weekly else {
+            return "--% | T--"
         }
 
-        let timePart = primary.timeLeftPercent.map { "T\($0)%" } ?? "T--"
-        return "\(primary.usedPercent)% · \(primary.countdownCompact) · \(timePart)"
+        let timePart = weekly.timeLeftPercent.map { "T\($0)%" } ?? "T--"
+        return "\(weekly.remainingPercent)% | \(timePart)"
     }
 
     private static func clampedPercent(_ value: Int) -> Int {

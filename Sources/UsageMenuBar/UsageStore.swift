@@ -21,7 +21,7 @@ final class UsageStore: ObservableObject {
     private var pollingTask: Task<Void, Never>?
 
     var menuBarTitle: String {
-        UsageFormatter.menuBarTitle(primary: primary)
+        UsageFormatter.menuBarTitle(weekly: secondary)
     }
 
     var stateText: String {
