@@ -49,7 +49,7 @@ struct UsagePopoverView: View {
             .frame(width: 42, height: 42)
 
             VStack(alignment: .leading, spacing: 3) {
-                Text("CUStats")
+                Text("Codex usage")
                     .font(.system(size: 21, weight: .bold))
                 HStack(spacing: 6) {
                     Circle()
@@ -95,9 +95,6 @@ struct UsagePopoverView: View {
     }
 
     private var headerSubtitle: String {
-        if let planType = store.planType {
-            return "\(planType) · \(store.stateText)"
-        }
         return store.stateText
     }
 
