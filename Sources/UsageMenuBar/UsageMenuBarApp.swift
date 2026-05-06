@@ -15,7 +15,7 @@ struct UsageMenuBarApp: App {
         } label: {
             Text(store.menuBarTitle)
                 .monospacedDigit()
-            .foregroundStyle(UsageThresholdColor.color(for: store.secondary?.remainingPercent))
+                .foregroundStyle(UsageThresholdColor.color(for: store.secondary?.remainingPercent))
         }
         .menuBarExtraStyle(.window)
     }

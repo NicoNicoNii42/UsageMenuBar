@@ -32,7 +32,6 @@ struct UsagePopoverView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            footer
         }
         .padding(16)
         .background(Color(nsColor: .windowBackgroundColor))
@@ -72,35 +71,15 @@ struct UsagePopoverView: View {
             .buttonStyle(.bordered)
             .help("View detailed usage information")
             .accessibilityLabel("View detailed usage information")
-        }
-    }
-
-    private var footer: some View {
-        HStack(spacing: 10) {
-            Button {
-                Task { await store.refresh() }
-            } label: {
-                Label("Refresh", systemImage: "arrow.clockwise")
-            }
-            .buttonStyle(.bordered)
-
-            Spacer()
-
-            if case .loginRequired = store.state {
-                Button {
-                    Task { await store.openCodexLogin() }
-                } label: {
-                    Label("Login", systemImage: "person.crop.circle.badge.exclamationmark")
-                }
-                .buttonStyle(.borderedProminent)
-            }
 
             Button {
                 NSApplication.shared.terminate(nil)
             } label: {
-                Label("Quit", systemImage: "power")
+                Image(systemName: "power")
             }
             .buttonStyle(.bordered)
+            .help("Quit UsageMenuBar")
+            .accessibilityLabel("Quit UsageMenuBar")
         }
     }
 
