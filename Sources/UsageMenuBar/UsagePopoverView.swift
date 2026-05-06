@@ -4,6 +4,7 @@ import UsageMenuBarCore
 struct UsagePopoverView: View {
     @EnvironmentObject private var store: UsageStore
     @Environment(\.openURL) private var openURL
+    private let usageDetailsURL = URL(string: "https://chatgpt.com/codex/cloud/settings/analytics")!
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -62,6 +63,15 @@ struct UsagePopoverView: View {
             }
 
             Spacer()
+
+            Button {
+                openURL(usageDetailsURL)
+            } label: {
+                Image(systemName: "info.circle")
+            }
+            .buttonStyle(.bordered)
+            .help("View detailed usage information")
+            .accessibilityLabel("View detailed usage information")
         }
     }
 
