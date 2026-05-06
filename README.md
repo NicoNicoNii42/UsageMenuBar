@@ -9,7 +9,7 @@ It reads live rate-limit data from the local Codex app-server JSON-RPC protocol 
 - reset countdowns
 - percentage of time left in each reset window
 
-<img width="401" height="440" alt="image" src="https://github.com/user-attachments/assets/24f7adfc-d462-44e3-b8b8-e5aaeb1e9b65" />
+<img width="392" height="399" alt="image" src="https://github.com/user-attachments/assets/5434deb8-0345-4761-b8b2-2706a2a68784" />
 
 
 ## Build and Test
